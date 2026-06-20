@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #fbf9f7;
+    --foreground: #302016;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Visible amber focus ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid #ce913b;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background-image: linear-gradient(90deg, #ce913b, #dda94e);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Animated hero background blobs */
+@keyframes blob-float-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(40px, -30px) scale(1.08);
+  }
+}
+
+@keyframes blob-float-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-36px, 28px) scale(1.05);
+  }
+}
+
+.animate-blob-a {
+  animation: blob-float-a 14s ease-in-out infinite;
+}
+
+.animate-blob-b {
+  animation: blob-float-b 18s ease-in-out infinite;
+}
+
+/* World-map connection: flowing dashed arc + pulsing nodes */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -200;
+  }
+}
+
+@keyframes node-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.map-arc {
+  stroke-dasharray: 5 8;
+  animation: dash-flow 6s linear infinite;
+}
+
+.map-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: node-ping 2.8s ease-out infinite;
+}
+
+/* Respect reduced-motion preferences globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
