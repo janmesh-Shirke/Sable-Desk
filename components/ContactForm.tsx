@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "./Button";
+import { submitContact } from "@/app/actions/submitContact";
 
 type Variant = "compact" | "home" | "full";
 
@@ -35,14 +36,16 @@ export function ContactForm({
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
   const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const onSubmit = async (data: FormValues) => {
-    // TODO: wire to a server action / API route or form service
-    // (e.g. Formspree, Resend). Currently client-side only.
-    // eslint-disable-next-line no-console
-    console.log("Contact form submission:", data);
-    await new Promise((r) => setTimeout(r, 400));
-    setSubmitted(true);
+    setServerError(null);
+    const result = await submitContact(data);
+    if (result.ok) {
+      setSubmitted(true);
+    } else {
+      setServerError(result.message ?? "Something went wrong. Please try again.");
+    }
   };
 
   // Which optional fields each variant shows.
@@ -141,6 +144,10 @@ export function ContactForm({
           </div>
         )}
       </div>
+
+      {serverError && (
+        <p className="mt-4 font-sans text-sm text-amber-dark">{serverError}</p>
+      )}
 
       <Button
         type="submit"
