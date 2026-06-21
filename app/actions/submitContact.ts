@@ -27,7 +27,7 @@ export async function submitContact(data: ContactPayload) {
   const resendKey = process.env.RESEND_API_KEY;
   if (resendKey) {
     const resend = new Resend(resendKey);
-    await resend.emails.send({
+    const { data: emailData, error: emailError } = await resend.emails.send({
       from: "SableDesk <notifications@sabledesk.co.uk>",
       to: "janmesh@sabledesk.co.uk",
       subject: `New enquiry from ${data.name} — ${data.firm}`,
@@ -38,6 +38,13 @@ export async function submitContact(data: ContactPayload) {
         ${data.aum ? `<p><strong>AUM:</strong> ${data.aum}</p>` : ""}
       `,
     });
+    if (emailError) {
+      console.error("Resend error:", JSON.stringify(emailError));
+    } else {
+      console.log("Resend email sent:", emailData?.id);
+    }
+  } else {
+    console.warn("RESEND_API_KEY not set — skipping email notification");
   }
 
   return { ok: true };
