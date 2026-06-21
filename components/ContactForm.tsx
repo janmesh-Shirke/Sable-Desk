@@ -55,7 +55,7 @@ export function ContactForm({
 
   const confirmation =
     variant === "full"
-      ? "Thanks — we'll come back to you within one business day with a modelled view of the EBITDA recovery for your portfolio."
+      ? "Thanks — we'll come back to you within one business day."
       : "Thanks — we'll be in touch within one business day to book your call.";
 
   if (submitted) {
