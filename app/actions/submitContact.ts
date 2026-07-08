@@ -28,7 +28,7 @@ export async function submitContact(data: ContactPayload) {
   if (resendKey) {
     const resend = new Resend(resendKey);
     const { data: emailData, error: emailError } = await resend.emails.send({
-      from: "SableDesk <onboarding@resend.dev>",
+      from: "SableDesk <notifications@sabledesk.co.uk>",
       to: "janmesh@sabledesk.co.uk",
       subject: `New enquiry from ${data.name} — ${data.firm}`,
       html: `
